@@ -6,6 +6,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'nutrition.apps.NutritionConfig',
+    'goals.apps.GoalsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

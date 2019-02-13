@@ -2,11 +2,13 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 
-from nutrition import views
+from goals.views import GoalViewSet
+from nutrition.views import ConsumptionViewSet, FoodViewSet
 
 router = routers.DefaultRouter()
-router.register(r'foods', views.FoodViewSet)
-router.register(r'consumptions', views.ConsumptionViewSet)
+router.register(r'foods', FoodViewSet)
+router.register(r'consumptions', ConsumptionViewSet)
+router.register(r'goals', GoalViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
