@@ -17,3 +17,15 @@ class Goal(models.Model):
 
     class Meta:
         unique_together = ('question', 'owner')
+
+    def __str__(self):
+        return self.question
+
+
+class Answer(models.Model):
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
+    value = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
+    date = models.DateField()
+
+    def __str__(self):
+        return f'{self.date}: {self.goal.question}'
