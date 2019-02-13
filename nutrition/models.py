@@ -5,8 +5,8 @@ from django.db import models
 
 class Food(models.Model):
     name = models.CharField(max_length=60)
-    healthIndex = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
-    isArchived = models.BooleanField()
+    health_index = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
+    is_archived = models.BooleanField(default=False)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):

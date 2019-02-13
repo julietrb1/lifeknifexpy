@@ -10,4 +10,4 @@ class GoalSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Goal
-        fields = ('url', 'question', 'test', 'frequency', 'cheat', 'style', 'startDate', 'owner')
+        fields = ('url', 'question', 'test', 'frequency', 'cheat', 'style', 'start_date', 'owner')

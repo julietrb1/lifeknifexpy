@@ -12,7 +12,7 @@ class Goal(models.Model):
     frequency = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
     cheat = models.PositiveSmallIntegerField(validators=[MinValueValidator(3), MaxValueValidator(14)])
     style = models.CharField(choices=STYLE_CHOICES, max_length=10)
-    startDate = models.DateField()
+    start_date = models.DateField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:

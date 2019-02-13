@@ -10,7 +10,7 @@ class FoodSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Food
-        fields = ('url', 'name', 'healthIndex', 'isArchived', 'owner')
+        fields = ('url', 'name', 'health_index', 'is_archived', 'owner')
 
 
 class ConsumptionSerializer(serializers.HyperlinkedModelSerializer):
