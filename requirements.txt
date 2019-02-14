@@ -3,3 +3,4 @@ djangorestframework==3.9.1
 djangorestframework-simplejwt==3.3
 PyJWT==1.7.1
 pytz==2018.9
+django-cors-headers==2.4.0

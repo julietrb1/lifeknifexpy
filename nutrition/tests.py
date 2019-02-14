@@ -1,18 +1,45 @@
-from django.contrib.auth.models import User
-from django.test import TestCase
-from rest_framework.test import APIClient
+import datetime
 
-from nutrition.models import Food
+from django.contrib.auth.models import User
+from rest_framework.test import APIRequestFactory
+
+from common.testing import AuthTestCase
+from nutrition.models import Food, Consumption
+from nutrition.serializers import FoodSerializer
 
 API_FOODS = '/foods/'
+API_CONSUMPTIONS = '/consumptions/'
 
 
-class NutritionTests(TestCase):
-    def setUp(self):
-        self.c = APIClient()
-        self.user = User.objects.create_user(username='test2', password='pass')
-        self.c.force_authenticate(self.user)
+class ConsumptionsTests(AuthTestCase):
+    def test_create_consumption(self):
+        food = Food.objects.create(name='testfood', health_index=1, owner=self.user)
+        context = {"request": APIRequestFactory().post(API_CONSUMPTIONS)}
+        consumption_to_create = {
+            'food': FoodSerializer(food, context=context).data['url'],
+            'date': datetime.datetime.now().strftime('%Y-%m-%dT%H:%M'),
+            'quantity': 1
+        }
+        response = self.c.post(API_CONSUMPTIONS, consumption_to_create)
+        self.assertEqual(response.status_code, 201, response.data)
+        consumptions = Consumption.objects.all()
+        self.assertEqual(len(consumptions), 1)
 
+    def test_create_consumption_on_foreign_food(self):
+        other_user = User.objects.create_user(username='other', password='pass')
+        food = Food.objects.create(name='testfood', health_index=1, owner=other_user)
+        consumption_to_create = {
+            'food': FoodSerializer(food, context=self.c['context']).data['url'],
+            'date': datetime.date.today(),
+            'quantity': 1
+        }
+        response = self.c.post(API_CONSUMPTIONS, consumption_to_create)
+        self.assertEqual(response.status_code, 400, response.data)
+        consumptions = Consumption.objects.all()
+        self.assertEqual(len(consumptions), 0)
+
+
+class FoodsTests(AuthTestCase):
     def test_create_food(self):
         food_to_create = {
             'name': 'testfood',
