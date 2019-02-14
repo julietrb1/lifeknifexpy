@@ -28,8 +28,9 @@ class ConsumptionsTests(AuthTestCase):
     def test_create_consumption_on_foreign_food(self):
         other_user = User.objects.create_user(username='other', password='pass')
         food = Food.objects.create(name='testfood', health_index=1, owner=other_user)
+        context = {"request": APIRequestFactory().post(API_CONSUMPTIONS)}
         consumption_to_create = {
-            'food': FoodSerializer(food, context=self.c['context']).data['url'],
+            'food': FoodSerializer(food, context=context).data['url'],
             'date': datetime.date.today(),
             'quantity': 1
         }
