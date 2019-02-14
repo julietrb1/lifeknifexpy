@@ -3,8 +3,5 @@ script:
   - python manage.py test
 python:
   - 3.6
-env:
-  global:
-    - BUILD_ON_TRAVIS=true
 services:
   - postgresql
