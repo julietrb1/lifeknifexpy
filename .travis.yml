@@ -6,3 +6,5 @@ python:
 env:
   global:
     - BUILD_ON_TRAVIS=true
+services:
+  - postgresql
