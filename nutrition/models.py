@@ -32,4 +32,4 @@ class Consumption(models.Model):
 
     class Meta:
         unique_together = ('date', 'owner', 'food')
-        ordering = ('date',)
+        ordering = ('-date',)
