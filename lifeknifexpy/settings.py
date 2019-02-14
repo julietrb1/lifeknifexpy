@@ -45,13 +45,13 @@ TEMPLATES = [
     },
 ]
 WSGI_APPLICATION = 'lifeknifexpy.wsgi.application'
-if os.getenv('TRAVIS'):
+if 'TRAVIS' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'mydatabase',
-            'USER': 'mydatabaseuser',
-            'PASSWORD': 'mypassword',
+            'NAME': 'travis_ci_test',
+            'USER': 'postgres',
+            'PASSWORD': '',
             'HOST': '127.0.0.1',
             'PORT': '5432',
         }
