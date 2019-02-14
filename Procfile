@@ -1,1 +1,1 @@
-web: gunicorn lifeknifexpy.wsgi
+web: PRODUCTION=1 gunicorn lifeknifexpy.wsgi

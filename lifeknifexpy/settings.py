@@ -1,9 +1,14 @@
 import os
 
+import dj_database_url
+
+IS_PRODUCTION = 'PRODUCTION' in os.environ
+IS_TEST = 'TRAVIS' in os.environ
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = 'ulbhag)%ote-g#kc^e5nmc*o=6#hwqxk!@anb+90dghoai6#ou'
-DEBUG = True
-ALLOWED_HOSTS = []
+SECRET_KEY = os.getenv('SECRET_KEY') if IS_PRODUCTION else 'ulbhag)%ote-g#kc^e5nmc*o=6#hwqxk!@anb+90dghoai6#ou'
+DEBUG = not IS_PRODUCTION
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS').split()] if IS_PRODUCTION else []
 INSTALLED_APPS = [
     'nutrition.apps.NutritionConfig',
     'goals.apps.GoalsConfig',
@@ -45,7 +50,11 @@ TEMPLATES = [
     },
 ]
 WSGI_APPLICATION = 'lifeknifexpy.wsgi.application'
-if 'TRAVIS' in os.environ:
+if IS_PRODUCTION:
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+elif IS_TEST:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -90,4 +99,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
     'PAGE_SIZE': 10
 }
-CORS_ORIGIN_ALLOW_ALL = True
+
+if IS_PRODUCTION:
+    CORS_ORIGIN_WHITELIST = os.getenv('CORS_ORIGIN_WHITELIST').split()
+else:
+    CORS_ORIGIN_ALLOW_ALL = True
