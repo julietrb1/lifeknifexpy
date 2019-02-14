@@ -8,7 +8,7 @@ IS_TEST = 'TRAVIS' in os.environ
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY') if IS_PRODUCTION else 'ulbhag)%ote-g#kc^e5nmc*o=6#hwqxk!@anb+90dghoai6#ou'
 DEBUG = not IS_PRODUCTION
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS').split()] if IS_PRODUCTION else []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split() if IS_PRODUCTION else []
 INSTALLED_APPS = [
     'nutrition.apps.NutritionConfig',
     'goals.apps.GoalsConfig',
