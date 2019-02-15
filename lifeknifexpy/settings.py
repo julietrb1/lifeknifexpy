@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 import dj_database_url
 
@@ -107,6 +108,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'PAGE_SIZE': 10
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
 if IS_PRODUCTION:
