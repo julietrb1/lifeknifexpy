@@ -6,6 +6,7 @@ from nutrition.serializers import FoodSerializer, ConsumptionSerializer
 class FoodViewSet(UserViewSet):
     queryset = Food.objects.all().order_by('name')
     serializer_class = FoodSerializer
+    search_fields = ['name']
 
 
 class ConsumptionViewSet(UserViewSet):

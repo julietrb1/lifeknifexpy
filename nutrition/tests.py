@@ -111,6 +111,23 @@ class FoodsTests(AuthTestCase):
         self.assertEqual(response.data['name'], food.name)
         self.assertEqual(response.data['health_index'], food.health_index)
 
+    def test_list_foods_search(self):
+        food = Food.objects.create(name='testfood', health_index=1, owner=self.user)
+        response = self.c.get(f'{API_FOODS}?search=estf')
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.data, dict)
+        self.assertTrue('results' in response.data)
+        self.assertIsInstance(response.data['results'], list)
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]['name'], food.name)
+        self.assertEqual(response.data['results'][0]['health_index'], food.health_index)
+        response = self.c.get(f'{API_FOODS}?search=somethingelse')
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.data, dict)
+        self.assertTrue('results' in response.data)
+        self.assertIsInstance(response.data['results'], list)
+        self.assertEqual(len(response.data['results']), 0)
+
     def test_get_foreign_food(self):
         other_user = User.objects.create(username='other', password='pass')
         food = Food.objects.create(name='testfood', health_index=1, owner=other_user)
