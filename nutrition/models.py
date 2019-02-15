@@ -8,6 +8,7 @@ class Food(models.Model):
     health_index = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
     is_archived = models.BooleanField(default=False)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    icon = models.CharField(blank=True, max_length=60)
 
     def __str__(self):
         return self.name
