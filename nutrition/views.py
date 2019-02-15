@@ -7,6 +7,7 @@ class FoodViewSet(UserViewSet):
     queryset = Food.objects.all().order_by('name')
     serializer_class = FoodSerializer
     search_fields = ['name']
+    filter_fields = ['is_archived']
 
 
 class ConsumptionViewSet(UserViewSet):

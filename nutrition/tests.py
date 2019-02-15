@@ -128,6 +128,15 @@ class FoodsTests(AuthTestCase):
         self.assertIsInstance(response.data['results'], list)
         self.assertEqual(len(response.data['results']), 0)
 
+    def test_get_foods_archived(self):
+        Food.objects.create(name='testfood', health_index=1, owner=self.user)
+        response = self.c.get(f'{API_FOODS}?is_archived=True')
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.data, dict)
+        self.assertTrue('results' in response.data)
+        self.assertIsInstance(response.data['results'], list)
+        self.assertEqual(len(response.data['results']), 0)
+
     def test_get_foreign_food(self):
         other_user = User.objects.create(username='other', password='pass')
         food = Food.objects.create(name='testfood', health_index=1, owner=other_user)
