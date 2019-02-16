@@ -1,23 +1,14 @@
-from rest_framework import serializers
-
+from common.serializers import OwnerSerializer
 from nutrition.models import Food, Consumption
 
 
-class FoodSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.HiddenField(
-        default=serializers.CurrentUserDefault()
-    )
-
+class FoodSerializer(OwnerSerializer):
     class Meta:
         model = Food
         fields = ('id', 'url', 'name', 'health_index', 'is_archived', 'icon', 'owner')
 
 
-class ConsumptionSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.HiddenField(
-        default=serializers.CurrentUserDefault()
-    )
-
+class ConsumptionSerializer(OwnerSerializer):
     def get_fields(self):
         fields = super().get_fields()
         fields['food'].queryset = Food.objects.filter(owner=self.context['request'].user)

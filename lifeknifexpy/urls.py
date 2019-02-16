@@ -3,13 +3,14 @@ from django.urls import include, path
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
-from goals.views import GoalViewSet
+from goals.views import GoalViewSet, AnswerViewSet
 from nutrition.views import ConsumptionViewSet, FoodViewSet
 
 router = routers.DefaultRouter()
 router.register('foods', FoodViewSet)
 router.register('consumptions', ConsumptionViewSet)
 router.register('goals', GoalViewSet)
+router.register('answers', AnswerViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
