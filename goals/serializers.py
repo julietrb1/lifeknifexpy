@@ -5,9 +5,12 @@ from goals.models import Goal, Answer
 
 
 class GoalSerializer(OwnerSerializer):
+    last_answered = serializers.DateField()
+
     class Meta:
         model = Goal
-        fields = ('url', 'id', 'question', 'test', 'frequency', 'cheat', 'style', 'start_date', 'owner')
+        fields = (
+        'url', 'id', 'question', 'test', 'frequency', 'cheat', 'style', 'start_date', 'last_answered', 'owner')
 
 
 class AnswerSerializer(serializers.HyperlinkedModelSerializer):

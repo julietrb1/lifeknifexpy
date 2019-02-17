@@ -15,6 +15,10 @@ class Goal(models.Model):
     start_date = models.DateField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    def last_answered(self):
+        latest_answer = self.answer_set.order_by('-date').first()
+        return latest_answer.date if latest_answer else None
+
     class Meta:
         unique_together = ('question', 'owner')
 
@@ -26,6 +30,9 @@ class Answer(models.Model):
     goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
     value = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
     date = models.DateField()
+
+    class Meta:
+        unique_together = ('goal', 'date')
 
     def __str__(self):
         return f'{self.date}: {self.goal.question}'
