@@ -13,6 +13,7 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split() if IS_PRODUCTION else []
 INSTALLED_APPS = [
     'nutrition.apps.NutritionConfig',
     'goals.apps.GoalsConfig',
+    'sec.apps.SecConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
