@@ -8,6 +8,7 @@ from goals.serializers import GoalSerializer, AnswerSerializer
 class GoalViewSet(UserViewSet):
     queryset = Goal.objects.all().order_by('question')
     serializer_class = GoalSerializer
+    search_fields = ['question']
 
 
 class AnswerViewSet(viewsets.ModelViewSet):
