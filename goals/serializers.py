@@ -1,3 +1,5 @@
+import pytz
+from django.utils import timezone
 from rest_framework import serializers
 
 from common.serializers import OwnerSerializer
@@ -14,10 +16,17 @@ class GoalSerializer(OwnerSerializer):
 
 
 class AnswerSerializer(serializers.HyperlinkedModelSerializer):
+    date = serializers.DateField(read_only=True)
+
     def get_fields(self):
         fields = super().get_fields()
         fields['goal'].queryset = Goal.objects.filter(owner=self.context['request'].user)
         return fields
+
+    def create(self, validated_data):
+        validated_data['date'] = timezone.now().astimezone(
+            pytz.timezone(self.context['request'].user.lifeuser.timezone)).date()
+        return super().create(validated_data)
 
     class Meta:
         model = Answer
