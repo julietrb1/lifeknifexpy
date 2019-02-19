@@ -20,6 +20,10 @@ class Goal(models.Model):
         latest_answer = self.answer_set.order_by('-date').first()
         return latest_answer.date if latest_answer else None
 
+    def todays_answer_value(self):
+        todays_answer = self.answer_set.filter(date=self.owner.lifeuser.get_current_time().date()).first()
+        return todays_answer.value if todays_answer else None
+
     class Meta:
         unique_together = ('question', 'owner')
 
