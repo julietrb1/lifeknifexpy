@@ -6,13 +6,14 @@ from goals.models import Goal, Answer
 
 class GoalSerializer(OwnerSerializer):
     last_answered = serializers.DateField(read_only=True)
+    todays_answer = serializers.HyperlinkedRelatedField(read_only=True, view_name='answer-detail')
     todays_answer_value = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Goal
         fields = (
             'url', 'id', 'question', 'test', 'frequency', 'cheat', 'style', 'start_date', 'last_answered',
-            'todays_answer_value', 'owner')
+            'todays_answer_value', 'todays_answer', 'owner')
 
 
 class AnswerSerializer(serializers.HyperlinkedModelSerializer):
