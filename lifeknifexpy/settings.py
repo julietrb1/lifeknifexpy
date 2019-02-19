@@ -2,6 +2,8 @@ import os
 from datetime import timedelta
 
 import dj_database_url
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 IS_PRODUCTION = 'PRODUCTION' in os.environ
 IS_TEST = 'TRAVIS' in os.environ
@@ -142,3 +144,7 @@ STATIC_URL = '/static/'
 # )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+sentry_sdk.init(
+    dsn=os.getenv('SENTRY_DSN'),
+    integrations=[DjangoIntegration()]
+)
