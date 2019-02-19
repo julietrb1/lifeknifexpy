@@ -132,6 +132,11 @@ if IS_PRODUCTION:
     EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
     ADMINS = [(os.getenv('ADMIN_NAME'), os.getenv('ADMIN_EMAIL'))]
     SERVER_EMAIL = os.getenv('SERVER_EMAIL')
+    sentry_sdk.init(
+        dsn=os.getenv('SENTRY_DSN'),
+        integrations=[DjangoIntegration()]
+    )
+
 else:
     CORS_ORIGIN_ALLOW_ALL = True
 
@@ -144,7 +149,3 @@ STATIC_URL = '/static/'
 # )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-sentry_sdk.init(
-    dsn=os.getenv('SENTRY_DSN'),
-    integrations=[DjangoIntegration()]
-)
