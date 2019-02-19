@@ -129,6 +129,7 @@ if IS_PRODUCTION:
     EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
     ADMINS = [(os.getenv('ADMIN_NAME'), os.getenv('ADMIN_EMAIL'))]
+    SERVER_EMAIL = os.getenv('SERVER_EMAIL')
 else:
     CORS_ORIGIN_ALLOW_ALL = True
 
