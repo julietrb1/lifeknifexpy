@@ -31,6 +31,9 @@ class Consumption(models.Model):
     def __str__(self):
         return f'{self.quantity}x {self.food.name}'
 
+    def food_name(self):
+        return self.food.name
+
     class Meta:
         unique_together = ('date', 'owner', 'food')
         ordering = ('-date',)
