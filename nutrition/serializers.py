@@ -12,6 +12,7 @@ class FoodSerializer(OwnerSerializer):
 
 class ConsumptionSerializer(OwnerSerializer):
     food_name = serializers.CharField(read_only=True)
+    food_icon = serializers.CharField(read_only=True)
 
     def get_fields(self):
         fields = super().get_fields()
@@ -20,4 +21,4 @@ class ConsumptionSerializer(OwnerSerializer):
 
     class Meta:
         model = Consumption
-        fields = ('id', 'url', 'food', 'date', 'quantity', 'owner', 'food_name')
+        fields = ('id', 'url', 'food', 'date', 'quantity', 'owner', 'food_name', 'food_icon')

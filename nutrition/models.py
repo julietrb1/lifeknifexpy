@@ -34,6 +34,9 @@ class Consumption(models.Model):
     def food_name(self):
         return self.food.name
 
+    def food_icon(self):
+        return self.food.icon
+
     class Meta:
         unique_together = ('date', 'owner', 'food')
         ordering = ('-date',)
