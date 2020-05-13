@@ -101,7 +101,7 @@ class FoodsTests(AuthTestCase):
             'health_index': 1
         }
         response = self.client.post(API_FOODS, food_to_create)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
         self.assertEqual(Food.objects.count(), 0)
 
     def test_get_food(self):
