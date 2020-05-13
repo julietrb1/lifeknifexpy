@@ -111,8 +111,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
     'PAGE_SIZE': 100
 }
@@ -122,15 +122,23 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SAMESITE = None
+CORS_ALLOW_CREDENTIALS = True
+
 if IS_PRODUCTION:
     CORS_ORIGIN_WHITELIST = (os.getenv('CORS_ORIGIN_WHITELIST'),)
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_DOMAIN = CSRF_COOKIE_DOMAIN = os.getenv('SESSION_COOKIE_DOMAIN')
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 31536000  # one year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SAMESITE = 'Strict'
     # EMAIL_HOST = os.getenv('EMAIL_HOST')
     # EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
     # EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
@@ -142,7 +150,10 @@ if IS_PRODUCTION:
     )
 
 else:
-    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)
+    # SESSION_COOKIE_DOMAIN = CSRF_COOKIE_DOMAIN = 'http://localhost'
+
+LOGIN_REDIRECT_URL = '/account/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
