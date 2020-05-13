@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from goals.views import GoalViewSet, AnswerViewSet
 from nutrition.views import ConsumptionViewSet, FoodViewSet
+from sec.views import account
 
 router = routers.DefaultRouter()
 router.register('foods', FoodViewSet)
@@ -12,8 +13,6 @@ router.register('consumptions', ConsumptionViewSet)
 router.register('goals', GoalViewSet)
 router.register('answers', AnswerViewSet)
 
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -21,4 +20,5 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('account/', account)
 ]
