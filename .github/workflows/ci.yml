@@ -10,6 +10,17 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    container: node:10.18-jessie
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     strategy:
       max-parallel: 4
       matrix:
@@ -30,6 +41,9 @@ jobs:
           coverage erase
           coverage run manage.py test
           coverage xml
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
       - uses: codecov/codecov-action@v1
           with:
             fail_ci_if_error: true
