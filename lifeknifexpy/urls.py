@@ -1,11 +1,12 @@
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import include, path
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 from goals.views import GoalViewSet, AnswerViewSet
 from nutrition.views import ConsumptionViewSet, FoodViewSet
-from sec.views import account
+from sec.views import account, CustomLoginView
 
 router = routers.DefaultRouter()
 router.register('foods', FoodViewSet)
@@ -20,5 +21,7 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('account/', account)
+    path('account/login/', CustomLoginView.as_view()),
+    path('account/logout/', LogoutView.as_view()),
+    path('account/', account),
 ]
