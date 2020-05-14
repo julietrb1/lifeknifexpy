@@ -5,6 +5,11 @@ import dj_database_url
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
+sentry_sdk.init(
+    dsn="https://d5a4c307198e4c38a82dbd7593234c5d@o153106.ingest.sentry.io/5240628",
+    integrations=[DjangoIntegration()], send_default_pii=True
+)
+
 IS_PRODUCTION = 'PRODUCTION' in os.environ
 IS_TEST = 'TRAVIS' in os.environ
 
@@ -147,10 +152,6 @@ if IS_PRODUCTION:
     # EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
     # ADMINS = [(os.getenv('ADMIN_NAME'), os.getenv('ADMIN_EMAIL'))]
     # SERVER_EMAIL = os.getenv('SERVER_EMAIL')
-    sentry_sdk.init(
-        dsn=os.getenv('SENTRY_DSN'),
-        integrations=[DjangoIntegration()]
-    )
 
 else:
     CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)
