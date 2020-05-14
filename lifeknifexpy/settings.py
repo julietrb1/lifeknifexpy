@@ -5,8 +5,13 @@ import dj_database_url
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
+sentry_sdk.init(
+    dsn="https://d5a4c307198e4c38a82dbd7593234c5d@o153106.ingest.sentry.io/5240628",
+    integrations=[DjangoIntegration()], send_default_pii=True
+)
+
 IS_PRODUCTION = 'PRODUCTION' in os.environ
-IS_TEST = 'TRAVIS' in os.environ
+IS_TEST = 'POSTGRES_PORT' in os.environ and 'POSTGRES_HOST' in os.environ
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY') if IS_PRODUCTION else 'ulbhag)%ote-g#kc^e5nmc*o=6#hwqxk!@anb+90dghoai6#ou'
@@ -64,11 +69,11 @@ elif IS_TEST:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'travis_ci_test',
+            'NAME': 'postgres',
             'USER': 'postgres',
-            'PASSWORD': '',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
+            'PASSWORD': 'postgres',
+            'HOST': os.getenv('POSTGRES_HOST'),
+            'PORT': os.getenv('POSTGRES_PORT'),
         }
     }
 else:
@@ -147,23 +152,12 @@ if IS_PRODUCTION:
     # EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
     # ADMINS = [(os.getenv('ADMIN_NAME'), os.getenv('ADMIN_EMAIL'))]
     # SERVER_EMAIL = os.getenv('SERVER_EMAIL')
-    sentry_sdk.init(
-        dsn=os.getenv('SENTRY_DSN'),
-        integrations=[DjangoIntegration()]
-    )
 
 else:
     CORS_ORIGIN_WHITELIST = ('http://localhost:3000',)
-    # SESSION_COOKIE_DOMAIN = CSRF_COOKIE_DOMAIN = 'http://localhost'
 
 LOGIN_REDIRECT_URL = '/account/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-
-# Extra places for collectstatic to find static files.
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
