@@ -44,8 +44,7 @@ jobs:
           coverage run manage.py test
           coverage xml
         env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          DATABASE_URL: postgres://localhost:${{ job.services.postgres.ports[5432] }}
       - uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
