@@ -56,32 +56,10 @@ TEMPLATES = [
     },
 ]
 WSGI_APPLICATION = 'lifeknifexpy.wsgi.application'
-if IS_PRODUCTION:
-    DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
-    }
-elif IS_TEST:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
-            'HOST': os.getenv('POSTGRES_HOST'),
-            'PORT': os.getenv('POSTGRES_PORT'),
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'lifeknifexpy',
-            'USER': 'lifeknifexpy',
-            'PASSWORD': 'lifeknifexpy',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=IS_PRODUCTION)
+}
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
