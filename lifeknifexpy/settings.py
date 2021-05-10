@@ -5,12 +5,7 @@ import dj_database_url
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-sentry_sdk.init(
-    dsn="https://d5a4c307198e4c38a82dbd7593234c5d@o153106.ingest.sentry.io/5240628",
-    integrations=[DjangoIntegration()], send_default_pii=True
-)
-
-IS_PRODUCTION = 'PRODUCTION' in os.environ
+IS_PRODUCTION = 'PRODUCTION' in os.environ or 'PROD' in os.environ
 IS_TEST = 'POSTGRES_PORT' in os.environ and 'POSTGRES_HOST' in os.environ
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -61,32 +56,10 @@ TEMPLATES = [
     },
 ]
 WSGI_APPLICATION = 'lifeknifexpy.wsgi.application'
-if IS_PRODUCTION:
-    DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
-    }
-elif IS_TEST:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
-            'HOST': os.getenv('POSTGRES_HOST'),
-            'PORT': os.getenv('POSTGRES_PORT'),
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'lifeknifexpy',
-            'USER': 'lifeknifexpy',
-            'PASSWORD': 'lifeknifexpy',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=IS_PRODUCTION)
+}
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -161,3 +134,20 @@ LOGIN_REDIRECT_URL = '/account/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Sentry
+if IS_PRODUCTION:
+    sentry_sdk.init(
+        environment='prod',
+        dsn='https://d5a4c307198e4c38a82dbd7593234c5d@o153106.ingest.sentry.io/5240628',
+        integrations=[DjangoIntegration()],
+
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
