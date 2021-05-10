@@ -46,7 +46,7 @@ jobs:
           coverage run manage.py test
           coverage xml
         env:
-          DATABASE_URL: postgres://postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
+          DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
       - uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
